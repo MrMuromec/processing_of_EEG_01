@@ -33,20 +33,21 @@ namespace WindowsFormsApplication1
         }
         public void get(out List<uint> table_fE_point) // Чтение энергии спектра
         {
-            /*
+
             double[] r = new double[2] { table_f_E.Min(), table_f_E.Max() - table_f_E.Min() };
             table_fE_point = new List<uint>();
             foreach (double one_point in table_f_E)
             {
                 table_fE_point.Add( (uint) ((uint.MaxValue-1)*(one_point - r[0])/(r[1])) );
             }
-             * */
+            /*
             double[] r = new double[2] { table_exel.Min(), table_exel.Max() - table_exel.Min() };
             table_fE_point = new List<uint>();
             foreach (double one_point in table_exel)
             {
                 table_fE_point.Add((uint)((uint.MaxValue - 1) * (one_point - r[0]) / (r[1])));
             }
+             * */
         }
         private void fft_of_alglib() // Спектр
         {

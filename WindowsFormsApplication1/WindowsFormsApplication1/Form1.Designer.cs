@@ -56,8 +56,8 @@
             this.комкандыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.экспортToolStripMenuItem});
             this.комкандыToolStripMenuItem.Name = "комкандыToolStripMenuItem";
-            this.комкандыToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
-            this.комкандыToolStripMenuItem.Text = "Комканды";
+            this.комкандыToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.комкандыToolStripMenuItem.Text = "Команды";
             // 
             // экспортToolStripMenuItem
             // 

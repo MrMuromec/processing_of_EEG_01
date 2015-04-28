@@ -29,25 +29,19 @@ namespace WindowsFormsApplication1
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             using (var g = Graphics.FromImage(pictureBox1.Image))
             {
-                List<uint> points;                
+                List<uint> points = new List<uint>();                
                 Tables_excel[0].get(out points);
-                
-                //g.DrawLine(Pens.Blue, 0, 0, 200, 300);
-                
-                double yy = g.DpiY/uint.MaxValue;
-                double xx = g.DpiX / (points.Count);
-                for (int i=0; i < points.Count - 1;i++)
-                {
-                    g.DrawLine(Pens.DarkRed, (int)(i * xx), (int)(points[i] * yy), (int)(i * xx + xx), (int)(points[i + 1] * yy));
-                }
-                
-                
-                
-                uint[] ps = new uint[points.Count];
-                points.CopyTo(ps, 0);
 
-               
-                //g.DrawLines(Pens.Blue,ps);
+                double yy = (double) pictureBox1.Size.Height / (points.Max() - points.Min());
+                double xx = (double) pictureBox1.Size.Width / (points.Count);
+                
+                System.Drawing.Point[] PS = new Point[points.Count];
+                for (int i = 0; i < points.Count; i++)
+                {
+                    PS[i].X = (int)(i * xx);
+                    PS[i].Y = (int)(pictureBox1.Size.Height - points[i] * yy);
+                }
+                g.DrawLines(Pens.DarkGreen,PS);
             }
         }
     }
