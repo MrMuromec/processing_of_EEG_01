@@ -1,0 +1,14 @@
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать заглушку для <PrivateImplementationDetails>{6783FE3F-8CAA-4CC3-B90F-F5C347303A88}: тип не поддерживается из-за внутренних ограничений.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+integrator1_func: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_func: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_fvec: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_grad: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_hess: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_jac: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_ode_rp: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_pfunc: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_pgrad: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_phess: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+ndimensional_rep: тип является делегатом.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для alglib+serializer+SMODE: тип является перечислением.
+F:\проба\WindowsFormsApplication1\WindowsFormsApplication1\Fakes\alglibnet2.fakes : warning : Невозможно создать оболочку совместимости для <PrivateImplementationDetails>{6783FE3F-8CAA-4CC3-B90F-F5C347303A88}: тип не поддерживается из-за внутренних ограничений.
