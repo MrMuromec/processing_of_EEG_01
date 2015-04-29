@@ -52,7 +52,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "Display";
             this.Text = "Display";
-            this.Load += new System.EventHandler(this.Display_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Display_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
