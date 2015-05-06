@@ -27,21 +27,24 @@ namespace WindowsFormsApplication1
         private void Display_Paint(object sender, PaintEventArgs e)
         {
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            List<uint> points = new List<uint>();
+
+            Tables_excel[0].getfe(out points);
+            d_paint(points,150,255,50,2);
+        }
+        private void d_paint(List<uint> points, byte Red, byte Green, byte Blue, byte width)
+        {
             using (var g = Graphics.FromImage(pictureBox1.Image))
             {
-                List<uint> points = new List<uint>();
-                Tables_excel[0].getf(out points);
-
                 double yy = (double)pictureBox1.Size.Height / (points.Max() - points.Min());
                 double xx = (double)pictureBox1.Size.Width / (points.Count);
-
                 System.Drawing.Point[] PS = new Point[points.Count];
                 for (int i = 0; i < points.Count; i++)
                 {
                     PS[i].X = (int)(i * xx);
                     PS[i].Y = (int)(pictureBox1.Size.Height - points[i] * yy);
                 }
-                g.DrawLines(Pens.DarkGreen, PS);
+                g.DrawLines(new Pen(Color.FromArgb(Red, Green, Blue), width), PS);
             }
         }
     }
