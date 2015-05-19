@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApplication1
 {
-    class C_rhythm 
+    public class C_rhythm 
     {
         private double f_max; // максимальная частота
+        private int f_max_i;
         private double f_min; // минимальная частота
-        private double sum = 0; // сумма на диапазоне 
+        private int f_min_i;
+        private double sum = 0; // сумма на диапазоне
 
 
         public C_rhythm(double f_min, double f_max)
@@ -20,8 +22,26 @@ namespace WindowsFormsApplication1
         }
         public void Sum (List<double> point, double df)
         {
-            for (int i = (int)(f_min/df); i < point.Count() ; i++ )
-                if (i < (f_max / df)) sum = sum + point[i];
+            f_max_i = (int)(point.Count() * f_max / df);
+            f_min_i = (int)(point.Count() * f_min / df);
+            sum = 0;
+            for (int i = f_min_i; i < point.Count(); i++)
+                if (i < f_max_i)
+                    sum = sum + point[i];
+                else break;
+        }
+        public void Sum(double SUM_rhythm)
+        {
+            sum = sum/SUM_rhythm;
+        }
+        public double get_sum()
+        {
+            return (double)sum;
+        }
+        public int[] get_f_i ()
+        {
+            int[] f_i= new int[2] {f_min_i,f_max_i};
+            return f_i;
         }
     }
 }

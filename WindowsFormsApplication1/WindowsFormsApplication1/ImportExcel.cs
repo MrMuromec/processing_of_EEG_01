@@ -13,13 +13,13 @@ namespace WindowsFormsApplication1
 {
     public partial class ImportExcel : Form
     {
-        private List<C_measurement> Tables_excel = new List<C_measurement>(); // Все измерения
-        private C_measurement table_excel = new C_measurement(); // Измерение
+        private List<C_measurement> Tables_excels = new List<C_measurement>(); // Все измерения
+        private C_measurement table_excel ; // Измерение
         private bool background; // ФОН (да/нет)
 
-        public ImportExcel(List<C_measurement> tables_excel, bool background)
+        public ImportExcel(List<C_measurement> tables_excels, bool background)
         {
-            this.Tables_excel.AddRange(tables_excel);
+            this.Tables_excels.AddRange(tables_excels);
             this.background = background;
             InitializeComponent();
         }
@@ -27,7 +27,7 @@ namespace WindowsFormsApplication1
         {
             string str;
             bool matches = false; // Индикатор совпадений (что бы не грузить одно и то же)
-            foreach (C_measurement t_e in Tables_excel)
+            foreach (C_measurement t_e in Tables_excels)
             {
                 t_e.get(out str);
                 matches = matches || (str == textBox1.Text);
@@ -37,6 +37,7 @@ namespace WindowsFormsApplication1
             else
                 try
                 {
+                    table_excel = new C_measurement();
                     table_excel.Add(textBox1.Text);
                     //Создаём приложение.
                     Microsoft.Office.Interop.Excel.Application ObjExcel = new Microsoft.Office.Interop.Excel.Application();
@@ -69,9 +70,9 @@ namespace WindowsFormsApplication1
                     }
                     table_excel.Add(background);
                     //Сохраняем результат
-                    Tables_excel.Add(table_excel);
+                    Tables_excels.Add(table_excel);
                     textBox2.Text = "Загрузка завершена";
-                    textBox3.Text = Tables_excel.Count.ToString();
+                    textBox3.Text = Tables_excels.Count.ToString();
                     button2.Visible = true;
                     ObjExcel.Quit();
                 }
@@ -92,14 +93,15 @@ namespace WindowsFormsApplication1
         }
         private void Display_Click(object sender, EventArgs e) // Отображение результатов
         {
-            Display form = new Display(Tables_excel, background);
+            Display1 form = new Display1(Tables_excels, background);
             form.MdiParent = this.MdiParent;
             form.Show(); 
             Close();            
         }
         private void ImportExcel_Load(object sender, EventArgs e) // Загрузка формы
         {
-            textBox3.Text = Tables_excel.Count.ToString();
+            textBox3.Text = Tables_excels.Count.ToString();
+            if (Tables_excels.Count != 0) button2.Visible = true;
         }
     } 
 }

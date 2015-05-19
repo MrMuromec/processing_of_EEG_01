@@ -12,15 +12,12 @@ namespace WindowsFormsApplication1
         private bool background = true; // ФОН (да/нет)
         private string address; // Адрес загруженной книги
         private alglib.complex[] table_f; // спектр
-        private List<double> Table_f = new List<double>(); // спектр
-        private List<double> Table_fe = new List<double>(); // энергетический спектр 
+        private List<double> Table_f = new List<double>(); // амплитудный спектр
+        private List<double> Table_fe = new List<double>(); //  спектр мощности
         private double df = 1000; // Шаг дискритизации (1k Гц)
 
-        private C_rhythm r_Alpha = new C_rhythm(8,13);
-        private C_rhythm r_Beta = new C_rhythm(14,40);
-        private C_rhythm r_Theta = new C_rhythm(4,8);
-        private C_rhythm r_Delta = new C_rhythm(0.5,4); 
-        private C_rhythm r_Gamma = new C_rhythm(40,150); // 150 просто что бы < 220
+        public C_EEG_rhythms1 rhythms_f = new C_EEG_rhythms1();
+        public C_EEG_rhythms1 rhythms_fe = new C_EEG_rhythms1();
 
         public void Add(double table_exel_point) // Добавление точки измерения
         {
@@ -38,6 +35,15 @@ namespace WindowsFormsApplication1
         public void get (out string address) // Чтение адреса
         {
             address = this.address;
+        }
+        public void get(out List<uint> table_point) // Чтение сигнала
+        {
+            double[] r = new double[2] { table_exel.Min(), table_exel.Max() - table_exel.Min() };
+            table_point = new List<uint>();
+            foreach (double one_point in table_exel)
+            {
+                table_point.Add((uint)((uint.MaxValue - 1) * (one_point - r[0]) / (r[1])));
+            }
         }
         public void getf(out List<uint> table_f_point) // Чтение спектра
         {
@@ -57,16 +63,7 @@ namespace WindowsFormsApplication1
                 table_fe_point.Add((uint)((uint.MaxValue - 1) * (Table_fe[i] - r[0]) / (r[1])));
             }
         }
-        public void get(out List<uint> table_point) // Чтение сигнала
-        {
-            double[] r = new double[2] { table_exel.Min(), table_exel.Max() - table_exel.Min() };
-            table_point = new List<uint>();
-            foreach (double one_point in table_exel)
-            {
-                table_point.Add((uint)((uint.MaxValue - 1) * (one_point - r[0]) / (r[1])));
-            }
-        }
-        private void fft_of_alglib() // Спектр + энергетический спектр
+        private void fft_of_alglib() // Спектр (амплитудный+мощностной)
         {
             double[] table_array;
             table_exel.CopyTo(table_array = new double[table_exel.Count], 0);
@@ -77,13 +74,14 @@ namespace WindowsFormsApplication1
             }
             for (int i = 0; i < table_f.Count(); i++)
             {
-                Table_fe.Add(alglib.math.abscomplex(alglib.math.csqr(table_f[i])) * (df * i));
+                Table_fe.Add(alglib.math.abscomplex(alglib.math.csqr(table_f[i])) * (double)(i * df / (2 * table_f.Count())));
             }
-            r_Alpha.Sum(Table_fe,df);
-            r_Beta.Sum(Table_fe, df);
-            r_Delta.Sum(Table_fe, df);
-            r_Gamma.Sum(Table_fe, df);
-            r_Theta.Sum(Table_fe, df);
+            rhythms_f.Sum(Table_f, df);
+            rhythms_fe.Sum(Table_fe, df);
+        }
+        public bool get()
+        {
+            return background;
         }
     }
 

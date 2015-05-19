@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="C_EEG_rhythms1.cs" />
     <Compile Include="C_measurement.cs" />
     <Compile Include="C_rhythm.cs" />
     <Compile Include="Display.cs">
