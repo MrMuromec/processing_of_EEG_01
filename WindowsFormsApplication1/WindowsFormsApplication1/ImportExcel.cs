@@ -23,6 +23,12 @@ namespace WindowsFormsApplication1
             this.background = background;
             InitializeComponent();
         }
+        public ImportExcel(bool background)
+        {
+            this.background = background;
+            InitializeComponent();
+        }
+
         private void Open_excel_Click(object sender, EventArgs e) // Открытие книги excel
         {
             string str;
@@ -38,7 +44,7 @@ namespace WindowsFormsApplication1
                 try
                 {
                     table_excel = new C_measurement();
-                    table_excel.Add(textBox1.Text);
+                    table_excel.Add_(textBox1.Text);
                     //Создаём приложение.
                     Microsoft.Office.Interop.Excel.Application ObjExcel = new Microsoft.Office.Interop.Excel.Application();
                     //Открываем книгу.                                                                                                                                                        
@@ -63,18 +69,23 @@ namespace WindowsFormsApplication1
                     ObjWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[1];
                     //читаем
                     Microsoft.Office.Interop.Excel.Range range;
-                    for (int i = 2; (range = ObjWorkSheet.get_Range("A" + i.ToString())).Text != ""; i++)
+                    for (int i = 2; (range = ObjWorkSheet.get_Range("A" + i.ToString())).Text != ""; i++) // Самое тормознутое место программы
                     {
                         textBox2.Text = "строка " + i.ToString();
-                        table_excel.Add((double.Parse(range.Text)));
+                        table_excel.Add_((double.Parse(range.Text)));
                     }
-                    table_excel.Add(background);
+                    table_excel.Add_(background);
                     //Сохраняем результат
                     Tables_excels.Add(table_excel);
                     textBox2.Text = "Загрузка завершена";
                     textBox3.Text = Tables_excels.Count.ToString();
                     button2.Visible = true;
                     ObjExcel.Quit();
+                    if (!background) // Если грузилась реакция
+                    {
+                        ////////////////////////////////////////////////////////////////////////////////////////////
+                        Close();
+                    }
                 }
                 catch (System.Runtime.InteropServices.COMException e1)
                 {
@@ -95,8 +106,8 @@ namespace WindowsFormsApplication1
         {
             Display1 form = new Display1(Tables_excels, background);
             form.MdiParent = this.MdiParent;
-            form.Show(); 
-            Close();            
+            form.Show();
+            Close();  
         }
         private void ImportExcel_Load(object sender, EventArgs e) // Загрузка формы
         {

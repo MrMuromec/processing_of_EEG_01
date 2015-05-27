@@ -11,9 +11,7 @@ using System.Windows.Forms;
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
-    {
-        List<C_measurement> Tables_excels = new List<C_measurement>(); // Все измерения
-    
+    {  
         public Form1()
         {
             InitializeComponent();
@@ -21,7 +19,7 @@ namespace WindowsFormsApplication1
 
         private void Import_Click(object sender, EventArgs e)
         {
-            ImportExcel form = new ImportExcel(Tables_excels, true);
+            ImportExcel form = new ImportExcel(true);
             form.MdiParent = this;
             form.Show();
         }

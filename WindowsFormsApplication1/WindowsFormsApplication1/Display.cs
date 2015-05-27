@@ -18,7 +18,9 @@ namespace WindowsFormsApplication1
     {
         private List<C_measurement> Tables_excels = new List<C_measurement>(); // Все измерения
         private bool background; // ФОН (да/нет)
-        private string str;
+        private List<C_rhythm> rhythms = new List<C_rhythm>(); // Список ритмов
+        private C_EEG_rhythms1 sr_rhythms = new C_EEG_rhythms1(); // Учреднённый ритм
+
         public Display1(List<C_measurement> tables_excel, bool background)
         {
             this.Tables_excels.AddRange(tables_excel);
@@ -30,6 +32,8 @@ namespace WindowsFormsApplication1
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             List<uint> points = new List<uint>();
 
+            textBox1.Text = " ";
+
             switch(comboBox1.SelectedIndex)
             {
                 case 0:
@@ -37,114 +41,56 @@ namespace WindowsFormsApplication1
                         Tables_excels[comboBox2.SelectedIndex].get(out points);
                         d_paint(points, 150, 250, 50, 2);
 
-                        textBox1.Text = 
-                        textBox2.Text = 
-                        textBox3.Text = 
-                        textBox4.Text = 
-                        textBox5.Text = 
-                        textBox6.Text = " ";
                         break;
                     }
                 case 1:
                     {
                         Tables_excels[comboBox2.SelectedIndex].getf(out points);
                         d_paint(points, 150, 250, 50, 2);
-
-                        textBox1.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_f.r_Delta.get_sum())).ToString() + "%";
-                        textBox2.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_f.r_Theta.get_sum())).ToString() + "%";
-                        textBox3.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_f.r_Alpha.get_sum())).ToString() + "%";
-                        textBox4.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_f.r_Beta1.get_sum())).ToString() + "%";
-                        textBox5.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_f.r_Beta2.get_sum())).ToString() + "%";
-                        textBox6.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_f.r_Gamma.get_sum())).ToString() + "%";
+                        textBox1.Text = text_of_rhythms(Tables_excels[comboBox2.SelectedIndex].rhythms_f);
                         break;
                     }
                 case 2:
                     {
                         Tables_excels[comboBox2.SelectedIndex].getfe(out points);
                         d_paint(points, 150, 250, 50, 2);
-
-                        textBox1.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_fe.r_Delta.get_sum())).ToString() + "%";
-                        textBox2.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_fe.r_Theta.get_sum())).ToString() + "%";
-                        textBox3.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_fe.r_Alpha.get_sum())).ToString() + "%";
-                        textBox4.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_fe.r_Beta1.get_sum())).ToString() + "%";
-                        textBox5.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_fe.r_Beta2.get_sum())).ToString() + "%";
-                        textBox6.Text = ((int)(100 * Tables_excels[comboBox2.SelectedIndex].rhythms_fe.r_Gamma.get_sum())).ToString() + "%";
+                        textBox1.Text = text_of_rhythms(Tables_excels[comboBox2.SelectedIndex].rhythms_fe);
                         break;
                     }
                 default: break;
             }
-            points.Clear();
-            if (background) sr(points);
-            points.Clear();
+            if (background) sr();
         }
-        private void sr(List<uint> points)
+        private void sr() // Рассчёт и отображение среднего
         {
-            double[] rhythms_sr= new double[6] {0,0,0,0,0,0};
+            rhythms.Clear();
+            textBox2.Text = " ";
 
             switch (comboBox1.SelectedIndex)
             {
                 case 1:
                 {
                     foreach (C_measurement element in Tables_excels) 
-                    {
-                        element.getf(out points);
                         if (element.get())
-                        {
-                            rhythms_sr[0] += element.rhythms_f.r_Delta.get_sum();
-                            rhythms_sr[1] += element.rhythms_f.r_Theta.get_sum();
-                            rhythms_sr[2] += element.rhythms_f.r_Alpha.get_sum();
-                            rhythms_sr[3] += element.rhythms_f.r_Beta1.get_sum();
-                            rhythms_sr[4] += element.rhythms_f.r_Beta2.get_sum();
-                            rhythms_sr[5] += element.rhythms_f.r_Gamma.get_sum();
-                        }
-                    }                         
+                            rhythms.AddRange(element.rhythms_f.rhythms);                       
                     break;
                 }
                 case 2:
                 {
                     foreach (C_measurement element in Tables_excels)
-                    {
-                        element.getfe(out points);
                         if (element.get())
-                        {
-                            rhythms_sr[0] += element.rhythms_fe.r_Delta.get_sum();
-                            rhythms_sr[1] += element.rhythms_fe.r_Theta.get_sum();
-                            rhythms_sr[2] += element.rhythms_fe.r_Alpha.get_sum();
-                            rhythms_sr[3] += element.rhythms_fe.r_Beta1.get_sum();
-                            rhythms_sr[4] += element.rhythms_fe.r_Beta2.get_sum();
-                            rhythms_sr[5] += element.rhythms_fe.r_Gamma.get_sum();
-                        }
-                    }
+                            rhythms.AddRange(element.rhythms_fe.rhythms);
                     break;
                 }
                 default: break;
-            }
+            }           
             if (comboBox1.SelectedIndex!=0)
             {
-                if (Tables_excels[Tables_excels.Count - 1].get())
-                    for (int i = 0; i < 6; i++)
-                        rhythms_sr[i] = rhythms_sr[i] / Tables_excels.Count();
-                else
-                    for (int i = 0; i < 6; i++)
-                        rhythms_sr[i] = rhythms_sr[i] / (Tables_excels.Count() - 1);
-                textBox12.Text = ((100 * rhythms_sr[0])).ToString().Substring(0, 5) +"%";
-                textBox11.Text = ((100 * rhythms_sr[1])).ToString().Substring(0, 5) + "%";
-                textBox10.Text = ((100 * rhythms_sr[2])).ToString().Substring(0, 5) + "%";
-                textBox9.Text = ((100 * rhythms_sr[3])).ToString().Substring(0, 5) + "%";
-                textBox8.Text = ((100 * rhythms_sr[4])).ToString().Substring(0, 5) + "%";
-                textBox7.Text = ((100 * rhythms_sr[5])).ToString().Substring(0, 5) + "%";
-            }
-            else
-            {
-                textBox12.Text = 
-                textBox11.Text = 
-                textBox10.Text = 
-                textBox9.Text = 
-                textBox8.Text = 
-                textBox7.Text = " ";
+                sr_rhythms.sr(rhythms);
+                textBox2.Text = text_of_rhythms(sr_rhythms);
             }
         }
-        private void d_paint(List<uint> points, byte Red, byte Green, byte Blue, byte width)
+        private void d_paint(List<uint> points, byte Red, byte Green, byte Blue, byte width) // Отрисовка
         {
             using (var g = Graphics.FromImage(pictureBox1.Image))
             {
@@ -161,6 +107,7 @@ namespace WindowsFormsApplication1
         }
         private void Display_Load(object sender, EventArgs e)
         {
+            string str;
             comboBox1.SelectedIndex = 2;
 
             for (int i = 0; i<Tables_excels.Count ; i++)
@@ -180,6 +127,49 @@ namespace WindowsFormsApplication1
         }
         private void button1_Click(object sender, EventArgs e)
         {
+            ImportExcel form = new ImportExcel(Tables_excels, background);
+            form.MdiParent = this.MdiParent;
+            form.Show(); 
+            this.Close();
+        }
+        private string text_of_rhythms(C_EEG_rhythms1 rhythms_) // Формирование текста
+        {
+            string str = "";
+            for (int i = 0; i < rhythms_.rhythms.Count() ;i++ )
+            {
+                str += str_(rhythms_.rhythms[i].get_sum(), rhythms_.rhythms[i].get_name());
+            }
+            return str;
+        }
+        private string str_(double zn, string str) // формирование строки
+        {
+            string str_zn = (100 * zn).ToString().Substring(0, 5).Replace('.', ',');
+            if (str_zn.Split(new char[] { ',' })[0].Length != str_zn.Split(new char[] { ',' })[1].Length)
+                str_zn = str_zn.Insert(0, " ").Substring(0, 5);
+            return str + " = " + str_zn + "%" + "\n";
+        }
+        private void button2_Click(object sender, EventArgs e) // Загрузка реакции
+        {
+            C_measurement fon = new C_measurement(); // Измерение
+
+            background = false;
+
+            rhythms.Clear();
+            foreach (C_measurement element in Tables_excels)
+                if (element.get())
+                    rhythms.AddRange(element.rhythms_f.rhythms);
+            sr_rhythms.sr(rhythms);
+            fon.r_f(sr_rhythms);
+
+            rhythms.Clear();
+            foreach (C_measurement element in Tables_excels)
+                if (element.get())
+                    rhythms.AddRange(element.rhythms_fe.rhythms);
+            sr_rhythms.sr(rhythms);
+            fon.r_fe(sr_rhythms);
+
+            fon.Add_(background);
+
             ImportExcel form = new ImportExcel(Tables_excels, background);
             form.MdiParent = this.MdiParent;
             form.Show(); 

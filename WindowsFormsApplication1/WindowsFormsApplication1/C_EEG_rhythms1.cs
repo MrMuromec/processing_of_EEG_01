@@ -8,29 +8,44 @@ namespace WindowsFormsApplication1
 {
     public class C_EEG_rhythms1
     {
-        public C_rhythm r_Delta = new C_rhythm(0.5, 4);
-        public C_rhythm r_Theta = new C_rhythm(4, 8);
-        public C_rhythm r_Alpha = new C_rhythm(8, 13);
-        public C_rhythm r_Beta1 = new C_rhythm(14, 20);
-        public C_rhythm r_Beta2 = new C_rhythm(20, 30);
-        public C_rhythm r_Gamma = new C_rhythm(30, 150); // 150 просто что бы < 220
-        private double sum_fe = 0; // сумма всего спектра (только ритмы)
+        // Диапазоны ритмов не должны перекрываться и идут впритык
+        public List<C_rhythm> rhythms = new List<C_rhythm>() { new C_rhythm(0.5, 4, "Delta"), new C_rhythm(4, 8, "Theta"), new C_rhythm(8, 13, "Alpha"), new C_rhythm(14, 20, "Beta1"), new C_rhythm(20, 30, "Beta2"), new C_rhythm(30, 150, "Gamma") };
 
-        public void Sum(List<double> point, double df)
+        public void Sum(List<double> point, double df) // Получение ритмов
         {
-            r_Alpha.Sum(point, df);
-            r_Beta1.Sum(point, df);
-            r_Beta2.Sum(point, df);
-            r_Delta.Sum(point, df);
-            r_Gamma.Sum(point, df);
-            r_Theta.Sum(point, df);
-            sum_fe = r_Alpha.get_sum() + r_Beta1.get_sum() + r_Beta2.get_sum() + r_Delta.get_sum() + r_Gamma.get_sum() + r_Theta.get_sum();
-            r_Alpha.Sum(sum_fe);
-            r_Beta1.Sum(sum_fe);
-            r_Beta2.Sum(sum_fe);
-            r_Delta.Sum(sum_fe);
-            r_Gamma.Sum(sum_fe);
-            r_Theta.Sum(sum_fe);
+            double sum_fe = 0; // сумма всего спектра (только ритмы)
+            for (int i = 0; i < rhythms.Count;i++ )
+            {
+                rhythms[i].Sum(point, df);
+                sum_fe += rhythms[i].get_sum();
+            }
+            for (int i = 0; i < rhythms.Count; i++)
+                rhythms[i].Sum(sum_fe);
+        }
+        public void sr(List<C_rhythm> rhythms_) // Усреднение
+        {
+            int N;
+            double SUM_rhythms;
+            for (int i = 0; i < rhythms.Count; i++)
+            {
+                N = 0;
+                SUM_rhythms = 0;
+                for (int j = 0; j < rhythms_.Count; j++)
+                    if (rhythms[i].get_name() == rhythms_[j].get_name())
+                    {
+                        N++;
+                        SUM_rhythms += rhythms_[j].get_sum();
+                        rhythms[i].sr_Sum(rhythms_[j].get_f(), rhythms_[j].get_name(), rhythms_[j].get_f_i());
+                    }
+                rhythms[i].sr_Sum(SUM_rhythms/N);
+            }                
+        }
+        public void norm(List<double> point, double df, double sr_sum) // Получение ритмов для реакции
+        {
+            for (int i = 0; i < rhythms.Count; i++)
+                rhythms[i].Sum(point, df);
+            for (int i = 0; i < rhythms.Count; i++)
+                rhythms[i].Sum(sr_sum);
         }
     }
 }

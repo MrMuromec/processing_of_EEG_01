@@ -9,9 +9,9 @@ namespace WindowsFormsApplication1
     public class C_measurement
     {
         private List<double> table_exel = new List<double>(); // данные
-        private bool background = true; // ФОН (да/нет)
-        private string address; // Адрес загруженной книги
-        private alglib.complex[] table_f; // спектр
+        private bool background = true; // ФОН (да/нет) - исключение усреднёный фон
+        private string address = " "; // Адрес загруженной книги
+        private alglib.complex[] table_f; // комплексный спектр
         private List<double> Table_f = new List<double>(); // амплитудный спектр
         private List<double> Table_fe = new List<double>(); //  спектр мощности
         private double df = 1000; // Шаг дискритизации (1k Гц)
@@ -19,16 +19,16 @@ namespace WindowsFormsApplication1
         public C_EEG_rhythms1 rhythms_f = new C_EEG_rhythms1();
         public C_EEG_rhythms1 rhythms_fe = new C_EEG_rhythms1();
 
-        public void Add(double table_exel_point) // Добавление точки измерения
+        public void Add_(double table_exel_point) // Добавление точки измерения
         {
             this.table_exel.Add(table_exel_point);            
         }
-        public void Add(bool background) // Добавление статуса значения
+        public void Add_(bool background) // Добавление статуса значения
         {            
             this.background = background;
-            fft_of_alglib();
+            if (background) fft_of_alglib();
         }
-        public void Add(string address) // Добавление адреса
+        public void Add_(string address) // Добавление адреса
         {
             this.address = address;
         }
@@ -79,9 +79,17 @@ namespace WindowsFormsApplication1
             rhythms_f.Sum(Table_f, df);
             rhythms_fe.Sum(Table_fe, df);
         }
-        public bool get()
+        public bool get() // Кто (фод-да)
         {
             return background;
+        }
+        public void r_f(C_EEG_rhythms1 rhythms_f)
+        {
+            this.rhythms_f = rhythms_f;
+        }
+        public void r_fe(C_EEG_rhythms1 rhythms_fe)
+        {
+            this.rhythms_fe = rhythms_fe;
         }
     }
 
