@@ -42,7 +42,7 @@
             this.комкандыToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(769, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(989, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -62,7 +62,7 @@
             // экспортToolStripMenuItem
             // 
             this.экспортToolStripMenuItem.Name = "экспортToolStripMenuItem";
-            this.экспортToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.экспортToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.экспортToolStripMenuItem.Text = "Импорт";
             this.экспортToolStripMenuItem.Click += new System.EventHandler(this.Import_Click);
             // 
@@ -70,7 +70,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(769, 445);
+            this.ClientSize = new System.Drawing.Size(989, 539);
             this.Controls.Add(this.menuStrip1);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;

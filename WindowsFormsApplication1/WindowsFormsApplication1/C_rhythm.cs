@@ -53,7 +53,7 @@ namespace WindowsFormsApplication1
             double[] f = new double[2] { f_min, f_max };
             return f;
         }
-        public void sr_Sum(double[] f_min_max, string name_str, int[] f_i) // Усреднение сумм (описание)
+        public void sr_Sum(double[] f_min_max, string name_str, int[] f_i) // Усреднение сумм (копирование описания)
         {
             this.f_min = f_min_max[0];
             this.f_max = f_min_max[1];

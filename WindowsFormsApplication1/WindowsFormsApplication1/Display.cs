@@ -19,7 +19,7 @@ namespace WindowsFormsApplication1
         private List<C_measurement> Tables_excels = new List<C_measurement>(); // Все измерения
         private bool background; // ФОН (да/нет)
         private List<C_rhythm> rhythms = new List<C_rhythm>(); // Список ритмов
-        private C_EEG_rhythms1 sr_rhythms = new C_EEG_rhythms1(); // Учреднённый ритм
+        private C_EEG_rhythms1 sr_rhythms = new C_EEG_rhythms1(); // Усреднённый ритм
 
         public Display1(List<C_measurement> tables_excel, bool background)
         {
@@ -27,14 +27,14 @@ namespace WindowsFormsApplication1
             this.background = background;
             InitializeComponent();
         }
-        private void Display_Paint(object sender, PaintEventArgs e)
+        private void Display_Paint(object sender, PaintEventArgs e) // Событие отрисовки
         {
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             List<uint> points = new List<uint>();
 
             textBox1.Text = " ";
 
-            switch(comboBox1.SelectedIndex)
+            switch(comboBox1.SelectedIndex) // выбор отображаемых параметров
             {
                 case 0:
                     {
@@ -59,7 +59,7 @@ namespace WindowsFormsApplication1
                     }
                 default: break;
             }
-            if (background) sr();
+            if (background) sr(); // Если фон то выводим среднее
         }
         private void sr() // Рассчёт и отображение среднего
         {
@@ -70,15 +70,15 @@ namespace WindowsFormsApplication1
             {
                 case 1:
                 {
-                    foreach (C_measurement element in Tables_excels) 
-                        if (element.get())
+                    foreach (C_measurement element in Tables_excels)
+                        if (element.get_bool() && element.sr_bool())
                             rhythms.AddRange(element.rhythms_f.rhythms);                       
                     break;
                 }
                 case 2:
                 {
                     foreach (C_measurement element in Tables_excels)
-                        if (element.get())
+                        if (element.get_bool() && element.sr_bool())
                             rhythms.AddRange(element.rhythms_fe.rhythms);
                     break;
                 }
@@ -105,7 +105,7 @@ namespace WindowsFormsApplication1
                 g.DrawLines(new Pen(Color.FromArgb(Red, Green, Blue), width), PS);
             }
         }
-        private void Display_Load(object sender, EventArgs e)
+        private void Display_Load(object sender, EventArgs e) // Загрузка формы 
         {
             string str;
             comboBox1.SelectedIndex = 2;
@@ -117,15 +117,15 @@ namespace WindowsFormsApplication1
             }
             comboBox2.SelectedIndex = Tables_excels.Count - 1;
         }
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) // Выбор измерения и пероерисовка
         {
             this.Invalidate();
         }
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) // Выбор режима и вызов перерисовки
         {
             this.Invalidate();
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e) // Загрузка нового измерения
         {
             ImportExcel form = new ImportExcel(Tables_excels, background);
             form.MdiParent = this.MdiParent;
@@ -150,25 +150,28 @@ namespace WindowsFormsApplication1
         }
         private void button2_Click(object sender, EventArgs e) // Загрузка реакции
         {
-            C_measurement fon = new C_measurement(); // Измерение
+            C_measurement fon = new C_measurement(); // Измерение для чреднего фона           
 
-            background = false;
-
+            // Средний спектр - ритмы
             rhythms.Clear();
             foreach (C_measurement element in Tables_excels)
-                if (element.get())
+                if (element.get_bool())
                     rhythms.AddRange(element.rhythms_f.rhythms);
             sr_rhythms.sr(rhythms);
             fon.r_f(sr_rhythms);
 
+            // Средний спектр миощности - ритмы
             rhythms.Clear();
             foreach (C_measurement element in Tables_excels)
-                if (element.get())
+                if (element.get_bool())
                     rhythms.AddRange(element.rhythms_fe.rhythms);
             sr_rhythms.sr(rhythms);
             fon.r_fe(sr_rhythms);
-
+            
             fon.Add_(background);
+            Tables_excels.Add(fon);
+            
+            background = false;
 
             ImportExcel form = new ImportExcel(Tables_excels, background);
             form.MdiParent = this.MdiParent;

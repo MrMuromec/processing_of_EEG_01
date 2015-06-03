@@ -83,7 +83,9 @@ namespace WindowsFormsApplication1
                     ObjExcel.Quit();
                     if (!background) // Если грузилась реакция
                     {
-                        ////////////////////////////////////////////////////////////////////////////////////////////
+                        Result form = new Result(Tables_excels, background);
+                        form.MdiParent = this.MdiParent;
+                        form.Show();
                         Close();
                     }
                 }
@@ -96,13 +98,13 @@ namespace WindowsFormsApplication1
                     MessageBox.Show(e2.ToString(), "Ошибка загрузки");
                 }
         }
-        private void Open_table_Click(object sender, EventArgs e) // Выбор файлв (книги excel)
+        private void Open_table_Click(object sender, EventArgs e) // Выбор файла (книги excel)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog() { };
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 textBox1.Text = openFileDialog1.FileName;
         }
-        private void Display_Click(object sender, EventArgs e) // Отображение результатов
+        private void Display_Click(object sender, EventArgs e) // Отображение промежуточных результатов
         {
             Display1 form = new Display1(Tables_excels, background);
             form.MdiParent = this.MdiParent;

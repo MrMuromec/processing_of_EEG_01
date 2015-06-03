@@ -9,8 +9,8 @@ namespace WindowsFormsApplication1
     public class C_measurement
     {
         private List<double> table_exel = new List<double>(); // данные
-        private bool background = true; // ФОН (да/нет) - исключение усреднёный фон
-        private string address = " "; // Адрес загруженной книги
+        private bool background = true; // ФОН (да/нет) 
+        private string address = ""; // Адрес загруженной книги
         private alglib.complex[] table_f; // комплексный спектр
         private List<double> Table_f = new List<double>(); // амплитудный спектр
         private List<double> Table_fe = new List<double>(); //  спектр мощности
@@ -26,7 +26,7 @@ namespace WindowsFormsApplication1
         public void Add_(bool background) // Добавление статуса значения
         {            
             this.background = background;
-            if (background) fft_of_alglib();
+            if (get_bool() && sr_bool()) fft_of_alglib(); ////////////////////////////////////////////
         }
         public void Add_(string address) // Добавление адреса
         {
@@ -49,7 +49,8 @@ namespace WindowsFormsApplication1
         {
             double[] r = new double[2] { Table_f.Min(), Table_f.Max() - Table_f.Min() };
             table_f_point = new List<uint>();
-            for (int i=0; i<Table_f.Count/2 ; i++ )
+
+            for (int i = 0; i < rhythms_f.max_i(); i++)
             {
                 table_f_point.Add((uint)((uint.MaxValue - 1) * (Table_f[i] - r[0]) / (r[1])));
             }
@@ -58,7 +59,8 @@ namespace WindowsFormsApplication1
         {
             double[] r = new double[2] { Table_fe.Min(), Table_fe.Max() - Table_fe.Min() };
             table_fe_point = new List<uint>();
-            for (int i = 0; i < Table_fe.Count / 2; i++)
+
+            for (int i = 0; i < rhythms_fe.max_i(); i++)
             {
                 table_fe_point.Add((uint)((uint.MaxValue - 1) * (Table_fe[i] - r[0]) / (r[1])));
             }
@@ -79,9 +81,13 @@ namespace WindowsFormsApplication1
             rhythms_f.Sum(Table_f, df);
             rhythms_fe.Sum(Table_fe, df);
         }
-        public bool get() // Кто (фод-да)
+        public bool get_bool() // Кто (фод-да)
         {
             return background;
+        }
+        public bool sr_bool() // Сравнение на наличие адреса
+        {
+            return address != "";
         }
         public void r_f(C_EEG_rhythms1 rhythms_f)
         {

@@ -46,3 +46,4 @@ F:\processing_of_EEG_01\WindowsFormsApplication1\WindowsFormsApplication1\obj\De
 F:\processing_of_EEG_01\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 F:\processing_of_EEG_01\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
 F:\processing_of_EEG_01\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Display1.resources
+F:\processing_of_EEG_01\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Result.resources
