@@ -45,7 +45,7 @@ namespace WindowsFormsApplication1
                         ambit.Add(Tables_excels[comboBox2.SelectedIndex].get_i()[0]);
                         ambit.Add(Tables_excels[comboBox2.SelectedIndex].get_i()[1]);
                         ambit.Add(points.Count());
-                        d_paint2(points, ambit);
+                        d_paint2(points, ambit); /// Вернуть старую отрисовку
 
                         break;
                     }
@@ -94,7 +94,7 @@ namespace WindowsFormsApplication1
 
             for (int i = 0; i < ambit.Count() - 1; i++) // Планы на будущее: не изголяться и назначить каждому интервалу свой цвет
             {
-                Red.Add((byte)((double)255*i/ambit.Count()));
+                Red.Add((byte)((double)255 * i/ambit.Count()));
                 Green.Add((byte)((double)255 * (ambit.Count() - i) / ambit.Count()));
                 Blue.Add((byte)((double)255 * i / ambit.Count()));
             }
@@ -146,21 +146,6 @@ namespace WindowsFormsApplication1
             {
                 sr_rhythms.sr(rhythms);
                 textBox2.Text = text_of_rhythms(sr_rhythms);
-            }
-        }
-        private void d_paint(List<uint> points, byte Red, byte Green, byte Blue, byte width) // Отрисовка
-        {
-            using (var g = Graphics.FromImage(pictureBox1.Image))
-            {
-                double yy = (double)pictureBox1.Size.Height / (points.Max() - points.Min());
-                double xx = (double)pictureBox1.Size.Width / (points.Count());
-                System.Drawing.Point[] PS = new Point[points.Count];
-                for (int i = 0; i < points.Count(); i++)
-                {
-                    PS[i].X = (int)(i * xx);
-                    PS[i].Y = (int)(pictureBox1.Size.Height - points[i] * yy);
-                }
-                g.DrawLines(new Pen(Color.FromArgb(Red, Green, Blue), width), PS);
             }
         }
         private void Display_Load(object sender, EventArgs e) // Загрузка формы 

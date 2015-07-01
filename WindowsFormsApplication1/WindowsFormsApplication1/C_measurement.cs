@@ -12,8 +12,18 @@ namespace WindowsFormsApplication1
         private int min_i, max_i; 
         private bool background = true; // ФОН (да/нет) 
         private string address = ""; // Адрес загруженной книги
-        public C_spekrt spek = new C_spekrt(); // Спектры + ритмы
+        private uint key; // Ключ - (от спектров и ритмов) ////////////////////////////////////
         
+        public C_spekrt spek = new C_spekrt(); // Спектры + ритмы
+
+        public void _put_key(uint key) // ВЫДАЧА КЛЮЧА
+        {
+            this.key = key;
+        }
+        public uint _get_key() // запрос ключа
+        {
+            return key;
+        }
         public void Add_(double table_exel_point) // Добавление точки измерения
         {
             this.table_exel.Add(table_exel_point);            
@@ -22,7 +32,7 @@ namespace WindowsFormsApplication1
         {            
             this.background = background;
             min_i = 0;
-            max_i = table_exel.Count();
+            max_i = table_exel.Count() - 1;
             if (get_bool() && sr_bool()) spek.fft_of_alglib(table_exel); 
         }
         public void Add_(string address) // Добавление адреса
@@ -38,7 +48,14 @@ namespace WindowsFormsApplication1
             int[] f_i = new int[2] { min_i, max_i };
             return f_i;
         }
-        public void get(out List<uint> table_point) // Чтение сигнала
+        public List<double> get() // Чтение сигнала
+        {
+            List<double> table_exel = new List<double>(); // данные
+            for (int i = min_i; i <= max_i; i++)
+                table_exel.Add(this.table_exel[i]);
+            return table_exel;
+        }
+        public void get(out List<uint> table_point) // Чтение сигнала в целочисленнном представлении
         {
             double[] r = new double[2] { table_exel.Min(), table_exel.Max() - table_exel.Min() };
             table_point = new List<uint>();

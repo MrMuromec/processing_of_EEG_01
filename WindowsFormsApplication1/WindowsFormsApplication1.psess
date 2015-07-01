@@ -67,11 +67,6 @@
       <ProjName>WindowsFormsApplication1</ProjName>
     </ProjBinary>
   </Binaries>
-  <Reports>
-    <Report>
-      <Path>WindowsFormsApplication1150526.vsp</Path>
-    </Report>
-  </Reports>
   <Launches>
     <ProjBinary>
       <Path>:PB:{D7C8BBE5-1460-41F1-9FA6-380A38B27120}|WindowsFormsApplication1\WindowsFormsApplication1.csproj</Path>
